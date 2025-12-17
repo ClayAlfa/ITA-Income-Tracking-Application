@@ -48,8 +48,8 @@ Pastikan sudah terinstall:
 ### 2. Clone Repository
 
 ```bash
-git clone [https://github.com/username-anda/pos-umkm.git](https://github.com/belpythons/posita.git)
-cd pos-umkm
+git clone https://github.com/belpythons/posita.git
+cd posita
 
 ```
 
@@ -78,7 +78,7 @@ Buka file `.env` dan sesuaikan koneksi database:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=pos_umkm_db  # Pastikan buat database ini di phpMyAdmin
+DB_DATABASE=retailer  # Pastikan buat database ini di phpMyAdmin
 DB_USERNAME=root
 DB_PASSWORD=
 
