@@ -103,17 +103,19 @@ class DailyConsignmentResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('date')
                     ->form([
-                        Forms\Components\DatePicker::make('date_from'),
-                        Forms\Components\DatePicker::make('date_until'),
+                        Forms\Components\DatePicker::make('created_from')
+                            ->label('Dari Tanggal'),
+                        Forms\Components\DatePicker::make('created_until')
+                            ->label('Sampai Tanggal'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
-                                $data['date_from'],
+                                $data['created_from'],
                                 fn(Builder $query, $date): Builder => $query->whereDate('date', '>=', $date),
                             )
                             ->when(
-                                $data['date_until'],
+                                $data['created_until'],
                                 fn(Builder $query, $date): Builder => $query->whereDate('date', '<=', $date),
                             );
                     }),
