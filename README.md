@@ -51,10 +51,11 @@ Ikuti langkah-langkah ini untuk menjalankan project di komputer Anda.
 
 ### 1. Prasyarat
 Pastikan sudah terinstall:
-* PHP >= 8.4
-* Composer
-* Node.js & NPM
-* MySQL (XAMPP/Laragon)
+
+*   PHP >= 8.4
+*   Composer
+*   Node.js & NPM
+*   MySQL (XAMPP/Laragon)
 
 ### 2. Clone Repository
 ```bash
