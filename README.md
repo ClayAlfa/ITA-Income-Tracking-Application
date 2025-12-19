@@ -54,7 +54,7 @@ Ikuti langkah-langkah ini untuk menjalankan project di komputer Anda.
 
 Pastikan sudah terinstall:
 
-*   PHP >= 8.2
+*   PHP >= 8.4
 *   Composer
 *   Node.js & NPM
 *   MySQL (XAMPP/Laragon)
