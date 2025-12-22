@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DailyConsignment;
 use App\Models\Partner;
 use App\Actions\Consignment\StartDailyShopAction;
 use Illuminate\Http\Request;
@@ -12,7 +11,10 @@ use Illuminate\Http\RedirectResponse;
 
 class PosController extends Controller
 {
-
+    /**
+     * Menampilkan halaman form buka toko/input produk.
+     * Mengambil data partner yang aktif untuk dropdown.
+     */
     public function createOpen(): Response
     {
         return Inertia::render('Pos/OpenShop', [
@@ -23,40 +25,50 @@ class PosController extends Controller
     }
 
     /**
-     * Menyimpan data produk konsinyasi baru.
-     * Route: pos.store
+     * Menyimpan data produk konsinyasi baru menggunakan StartDailyShopAction.
+     * * @param Request $request
+     * @param StartDailyShopAction $startDailyShopAction
+     * @return RedirectResponse
      */
     public function storeOpen(Request $request, StartDailyShopAction $startDailyShopAction): RedirectResponse
     {
-        // Validasi input dari form Vue
+        // 1. Validasi Input Dasar
+        // Kita validasi 'markup' hanya boleh 5, 10, atau 15 sesuai permintaan.
         $validated = $request->validate([
             'partner_id'    => 'required|exists:partners,id',
             'product_name'  => 'required|string|max:255',
             'initial_stock' => 'required|integer|min:1',
             'base_price'    => 'required|numeric|min:0',
-            'markup'        => 'required|integer|min:0',
+            'markup'        => 'required|in:5,10,15', 
+            'shop_session_id' => 'nullable|integer', // Optional, tergantung sistem sesi teman Anda
         ]);
 
         try {
-            // Menjalankan Action untuk menyimpan data
-            $startDailyShopAction->execute($request->user(), $validated);
 
-            // Redirect kembali ke halaman yang sama (atau dashboard) dengan pesan sukses
-            // Menggunakan back() memudahkan jika Anda ingin input banyak barang berturut-turut
-            return redirect()->back()->with('success', 'Produk konsinyasi berhasil ditambahkan!');
+            $dataForAction = [
+                'partner_id'        => $validated['partner_id'],
+                'product_name'      => $validated['product_name'],
+                'initial_stock'     => $validated['initial_stock'],
+                'base_price'        => $validated['base_price'],
+                'markup_percentage' => (int) $validated['markup'], 
+                'shop_session_id'   => $validated['shop_session_id'] ?? null,
+            ];
+
+            $startDailyShopAction->execute($request->user(), $dataForAction);
+
+            return redirect()
+                ->back()
+                ->with('success', 'Produk ' . $validated['product_name'] . ' berhasil ditambahkan!'); 
             
         } catch (\Exception $e) {
-            // Mengirim pesan error jika logika bisnis di Action gagal
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
-    /**
-     * Method index dan close tetap ada namun dibuat lebih sederhana 
-     * jika Anda tidak mengurus bagian penutupan toko.
-     */
     public function index(): Response
     {
         return Inertia::render('Pos/Dashboard');
     }
+
+    
 }
