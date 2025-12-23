@@ -24,12 +24,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // POS Routes
-    Route::get('/pos', [PosController::class, 'index'])->name('pos.dashboard');
-    Route::get('/pos/open', [PosController::class, 'createOpen'])->name('pos.open');
-    Route::post('/pos/open', [PosController::class, 'storeOpen'])->name('pos.store');
-    Route::get('/pos/close', [PosController::class, 'createClose'])->name('pos.close');
-    Route::put('/pos/close/{dailyConsignment}', [PosController::class, 'updateClose'])->name('pos.update-close');
+    // POS Routes //Clay-X
+    Route::get('/pos', [PosController::class, 'index'])->name('pos.dashboard'); //Clay-X
+    Route::get('/pos/open', [PosController::class, 'createOpen'])->name('pos.open'); //Clay-X
+    Route::post('/pos/open', [PosController::class, 'store'])->name('pos.store'); //Clay-X
+    Route::get('/pos/close', [PosController::class, 'createClose'])->name('pos.close'); //Clay-X
+    Route::put('/pos/close/{dailyConsignment}', [PosController::class, 'updateClose'])->name('pos.updateClose'); //Clay-X
+    // Clay-X: Backwards-compatible redirect for links that point to /dashboard/pos
+    Route::redirect('/dashboard/pos', '/pos'); //Clay-X
+    Route::get('/api/consignments/daily', [PosController::class, 'getDailyConsignments']); //Clay-X
 });
 
 require __DIR__ . '/auth.php';
