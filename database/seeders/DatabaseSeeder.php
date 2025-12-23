@@ -105,19 +105,29 @@ class DatabaseSeeder extends Seeder
         // Session 1: Closed Yesterday (Retailer 1)
         DailyConsignment::create([
             'date' => Carbon::yesterday(),
-            'start_cash' => 200000,
-            'actual_cash' => 500000, // Profit/Revenue simplified
-            'total_revenue' => 300000,
-            'total_profit' => 60000,
+            'partner_id' => $berkah->id,
+            'product_name' => 'Roti Coklat',
+            'initial_stock' => 50,
+            'base_price' => 2000,
+            'markup_percentage' => 20,
+            'selling_price' => 2400,
+            'quantity_sold' => 45,
+            'total_revenue' => 108000,
+            'total_profit' => 18000,
             'status' => 'closed',
-            'closed_at' => Carbon::yesterday()->setHour(21),
             'input_by_user_id' => $retailer1->id,
         ]);
 
         // Session 2: Active Today (Retailer 1)
         DailyConsignment::create([
             'date' => Carbon::today(),
-            'start_cash' => 200000,
+            'partner_id' => $snack->id,
+            'product_name' => 'Lemper Ayam',
+            'initial_stock' => 30,
+            'base_price' => 2500,
+            'markup_percentage' => 10,
+            'selling_price' => 2750,
+            'quantity_sold' => 0,
             'status' => 'open',
             'input_by_user_id' => $retailer1->id,
         ]);
